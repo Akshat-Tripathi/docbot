@@ -8,11 +8,18 @@ Created on Thu Jan  9 14:41:45 2020
 from mouse import move, click
 from keyboard import press_and_release
 from selenium import webdriver
-from time import sleep
+from pause import until, datetime, sleep
+import timeit
 
-TICKET_ID = "-89040641957"
+
+# TICKET_ID = "89040641957"
+TICKET_ID = "89217230137"
 X, Y = 600, 270
 DELTA_Y = 100
+# URL = "https://www.eventbrite.co.uk/e/hackhack-tickets-"
+URL = "https://www.eventbrite.co.uk/e/hack1040-tickets-"
+# LAUNCH = datetime(2020, 1, 10, 13, 30, 0, 100000)
+LAUNCH = datetime(2020, 1, 10, 11, 1, 46, 100000)
 
 REG_X, REG_Y = 600, 750
 
@@ -21,13 +28,20 @@ def click_select(n):
     click()
 
 driver = webdriver.Chrome()
-driver.get("https://www.eventbrite.co.uk/e/hackhack-tickets" + TICKET_ID)
+
+until(LAUNCH)
+s = timeit.default_timer()
+driver.get(URL  + TICKET_ID)
+load = timeit.default_timer()
 reg1 = driver.find_element_by_id("eventbrite-widget-modal-trigger" + TICKET_ID)
 reg1.click()
 sleep(2)
 click_select(0)
 press_and_release("down")
 press_and_release("enter")
-sleep(2)
+sleep(1)
 move(REG_X, REG_Y)
 click()
+e = timeit.default_timer()
+print(load - s)
+print(e - s)
